@@ -1,3 +1,6 @@
+require 'party_foul/exception_dump'
+require 'party_foul/env_dump'
+
 class PartyFoul::ExceptionHandler
   attr_accessor :rendered_issue
 
@@ -7,7 +10,7 @@ class PartyFoul::ExceptionHandler
   #
   # @param [Exception, Hash]
   def self.handle(exception, env)
-    PartyFoul.processor.handle(exception, clean_env(env))
+    PartyFoul.processor.handle(PartyFoul::ExceptionDump.new(exception), PartyFoul::EnvDump.new(env))
   end
 
   # Makes an attempt to determine what framework is being used and will use the proper

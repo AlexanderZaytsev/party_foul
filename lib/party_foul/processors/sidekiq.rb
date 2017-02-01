@@ -8,10 +8,10 @@ class PartyFoul::Processors::Sidekiq < PartyFoul::Processors::Base
   #
   # @param [Exception, Hash]
   def self.handle(exception, env)
-    perform_async(Marshal.dump(exception), Marshal.dump(env))
+    perform_async(Marshal.dump(exception).force_encoding('ISO-8859-1').encode('UTF-8'), Marshal.dump(env).force_encoding('ISO-8859-1').encode('UTF-8'))
   end
 
   def perform(exception, env)
-    PartyFoul::ExceptionHandler.new(Marshal.load(exception), Marshal.load(env)).run
+    PartyFoul::ExceptionHandler.new(Marshal.load(exception.force_encoding('UTF-8').encode('ISO-8859-1')), Marshal.load(env.force_encoding('UTF-8').encode('ISO-8859-1'))).run
   end
 end
