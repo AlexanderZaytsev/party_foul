@@ -2,7 +2,7 @@ require 'octokit'
 
 module PartyFoul
   class << self
-    attr_accessor :github, :oauth_token, :api_endpoint, :owner, :repo, :blacklisted_exceptions, :processor, :web_url, :branch, :additional_labels, :comment_limit, :title_prefix
+    attr_accessor :github, :oauth_token, :api_endpoint, :owner, :repo, :blacklisted_exceptions, :processor, :web_url, :branch, :additional_labels, :comment_limit, :title_prefix, :handle_wait_time
   end
 
   # The git branch that is used for linking in the stack trace
@@ -65,6 +65,13 @@ module PartyFoul
   # @return [String]
   def self.repo_url
     "#{web_url}/#{repo_path}"
+  end
+
+  # How long to wait before handling an issue
+  #
+  # @return [Integer]
+  def self.handle_wait_time
+    @handle_wait_time ||= 0.seconds
   end
 
   # The configure block for PartyFoul. Use to initialize settings

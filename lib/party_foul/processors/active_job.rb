@@ -2,7 +2,7 @@ class PartyFoul::Processors::ActiveJob < ApplicationJob
   queue_as 'party_foul'
 
   def self.handle(exception, env)
-    perform_later(Marshal.dump(exception).force_encoding('ISO-8859-1').encode('UTF-8'), Marshal.dump(env).force_encoding('ISO-8859-1').encode('UTF-8'))
+    set(wait: PartyFoul.handle_wait_time).perform_later(Marshal.dump(exception).force_encoding('ISO-8859-1').encode('UTF-8'), Marshal.dump(env).force_encoding('ISO-8859-1').encode('UTF-8'))
   end
 
   def perform(exception, env)
